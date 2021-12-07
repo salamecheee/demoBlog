@@ -22,7 +22,7 @@ class ArticleFixtures extends Fixture
             // On execute tous les setters de l'objet afin de remplir les objets et d'ajouter un titre, contenu, image ect pour nos 10 articles
             $article->setTitre("Titre de l'article $i")
                     ->setContenu("<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")
-                    ->setPhoto("http://picsum.photo/id/239/300/600")
+                    ->setPhoto("https://picsum.photos/id/237/300/600")
                     ->setDate(new \DateTime());
 
             // Nous faisons appel à l'objet $manager ObjetManager

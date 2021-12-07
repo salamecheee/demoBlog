@@ -7,51 +7,38 @@
 {% block body %}
 
 <div class="row mb-2">
+    {# cet objet 'articles' ne sort pas de nulle part, c'est ce que le controller à transmis au template, c'est-à-dire l'ensemble des artciles séléctionnés en bdd #}
+
+    {% for data in articles %}
+
+    {# 'data' ne sort pas de nulle part, c'est une variable de récupération que nous définissons dans la boucle for qui récéptionne l'article par tour de boucle for #}
+
+      <!-- {{ dump(data) }} -->
 
     <div class="col-md-6">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
+      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative">
+        <div class="col-8 p-4 d-flex flex-column position-static">
           <strong class="d-inline-block mb-2 text-primary">World</strong>
-          <h3 class="mb-0">Featured post</h3>
+          <h3 class="mb-0">{{ data.titre }}</h3>
           <div class="mb-1 text-muted">Nov 12</div>
-          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-          <a href="{{ path('blog_show')}}" class="stretched-link">Lire la suite</a>
+
+          {# slice(0, 100) : filtre twig qui retourne une partie de la chaîne de caractères #}
+          {# striptags : filtre twig qui supprime les balises html #}
+          <p class="card-text mb-auto">{{ data.contenu|slice(0, 100)|striptags }}</p>
+
+          {# Pour la date, ce que retourne la bdd est un objet issu de la classe DateTime, donc on ne peut pas convertir un objet en chaîn de caractères, pour cela nous devons utiliser la fonction date() de twig #}
+          <p class="card-text mb-auto">Publié le {{ data.date|date("Y-m-d") }} à {{ data.date|date("H:i:s") }}</p>
+          <a href="{{ path('blog_show', {'id' : data.id})}}" class="stretched-link">Lire la suite</a>
+
         </div>
-        <div class="col-auto d-none d-lg-block">
-          <img src="https://picsum.photos/id/239/200/250" alt="">
+        <div class="col-4">
+          {# 'replace() : fonction twig permettant de remplacer un élément dans une chaîne de caractères #}
+          <img src="{{ data.photo|replace({'300/600': '200/250'}) }}" alt="">
         </div>
       </div>
     </div>
 
-    <div class="col-md-6">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary">World</strong>
-          <h3 class="mb-0">Featured post</h3>
-          <div class="mb-1 text-muted">Nov 12</div>
-          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-          <a href="{{ path('blog_show')}}" class="stretched-link">Lire la suite</a>
-        </div>
-        <div class="col-auto d-none d-lg-block">
-          <img src="https://picsum.photos/id/240/200/250" alt="">
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-        <div class="col p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary">World</strong>
-          <h3 class="mb-0">Featured post</h3>
-          <div class="mb-1 text-muted">Nov 12</div>
-          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-          <a href="{{ path('blog_show')}}" class="stretched-link">Lire la suite</a>
-        </div>
-        <div class="col-auto d-none d-lg-block">
-          <img src="https://picsum.photos/id/241/200/250" alt="">
-        </div>
-      </div>
-    </div>
+    {% endfor %}
 
   </div>
 
