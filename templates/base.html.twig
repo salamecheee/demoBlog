@@ -4,8 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
-        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-        <meta name="generator" content="Hugo 0.88.1">
+        <meta name="author" content="Notre premier blog Symfony">
+        <meta name="generator" content="Safia">
         <title>Projet Symphony</title>
 
         <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/blog/">
@@ -16,6 +16,11 @@
         <!-- Favicons -->
         <meta name="theme-color" content="#7952b3">
 
+        <title>
+        {% block title %}
+          Blog Symfony
+        {% endblock %}
+        </title>
 
         <style>
         .bd-placeholder-img {
@@ -68,7 +73,7 @@
 
             <div class="nav-scroller py-1 mb-2">
                 <nav class="nav d-flex justify-content-between">
-                <a class="p-2 link-secondary" href="#">World</a>
+                <a class="p-2 link-secondary" href="{{ path('blog_create') }}">World</a>
                 <a class="p-2 link-secondary" href="#">U.S.</a>
                 <a class="p-2 link-secondary" href="#">Technology</a>
                 <a class="p-2 link-secondary" href="#">Design</a>
@@ -87,6 +92,7 @@
         <main class="container conteneur-front">
 
           <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+
             <div class="col-md-6 px-0">
 
               <h1 class="display-4 fst-italic">Un framework d'excellence</h1>
@@ -95,6 +101,7 @@
 
               <p class="lead mb-0"><a href="{{ path('blog')}}" class="text-white fw-bold">Continue reading...</a></p>
             </div>
+
           </div>
           {% block body %}
 
