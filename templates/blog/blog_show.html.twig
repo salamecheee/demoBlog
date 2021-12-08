@@ -12,13 +12,29 @@
 
   {# cet objet 'article' ne sort pas de nulle part, c'est ce que le controller à transmis au template, c'est-à-dire les informations d'un article séléctionné en bdd en fonction de l'id transmis dans l'url #}
 
-  {{ dump(article) }}
+  {#  {{ dump(article) }} #}
+
+  {# Affichage des messages utlisateurs stockés en session (addFlash dans le controller) #}
+  {# app : objet twig qui contient toutes les informations dela session en cours #}
+  {% for message in app.flashes('success') %}
+      <div class="col-6 mx-auto text-center alert alert-success">
+          {{ message }}
+      </div>
+  {% endfor %}
+
+  {% if article.photo != null %}
+      {% set col = 8 %} {# set permet de déclarer des variables en Twig #}
+  {% else %}
+      {% set col = 12 %}
+  {% endif %}
+
+
 
   <div class="col-md-12">
 
 
     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative">
-      <div class="col p-4 d-flex flex-column position-static">
+      <div class="col-{{ col }} p-4 d-flex flex-column position-static">
         <strong class="d-inline-block mb-2 text-primary">World</strong>
         <h3 class="mb-0">{{ article.titre }}</h3>
         <div class="mb-1 text-muted">{{ article.date|date("Y-m-d") }} à {{ article.date|date("H:i:s") }}</div>
@@ -26,14 +42,24 @@
         <p class="card-text mb-auto">{{ article.contenu|striptags }}</p>
 
         <p class="mt-3">
-          <a href="{{ path('home') }}" class="btn btn-warning">Modifier</a>
+          <a href="{{ path('blog_edit', {'id': article.id}) }}" class="btn btn-warning">Modifier</a>
           <a href="#" class="btn btn-warning">Imprimer</a>
         </p>
       </div>
 
-      <div class="col-auto d-none d-lg-block">
-        <img src="{{ article.photo|replace({'300/600': '200/250'}) }}" alt="">
+      {% if article.photo != null %}
+
+      <div class="col-4 d-none d-lg-block">
+
+          <img src="{{ asset('upload/photos/' ~ article.photo) }}" alt="{{ article.titre }}" class="col-12 img-responsive">
       </div>
+
+      {% endif %}
+
+
+  </div>
+</div>
+
 
     </div>
 
