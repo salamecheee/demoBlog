@@ -8,6 +8,7 @@
 
 <div class="row mb-2">
     {# cet objet 'articles' ne sort pas de nulle part, c'est ce que le controller à transmis au template, c'est-à-dire l'ensemble des artciles séléctionnés en bdd #}
+    <!-- {{ dump(articles) }} -->
 
     {% for data in articles %}
 
@@ -18,7 +19,7 @@
     {% if data.photo != null %}
         {% set col = 8 %} {# set permet de déclarer des variables en Twig #}
     {% else %}
-        {% set col = 12 %} 
+        {% set col = 12 %}
     {% endif %}
 
 
@@ -28,7 +29,7 @@
     <div class="col-md-6">
       <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative">
         <div class="col-8 p-4 d-flex flex-column position-static">
-          <strong class="d-inline-block mb-2 text-primary">World</strong>
+          <strong class="d-inline-block mb-2 text-primary">{{ data.category.titre }}</strong>
           <h3 class="mb-0">{{ data.titre }}</h3>
           <div class="mb-1 text-muted">Nov 12</div>
 
