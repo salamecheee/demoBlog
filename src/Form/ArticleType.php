@@ -12,6 +12,9 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Category;
+
 
 class ArticleType extends AbstractType
 {
@@ -34,6 +37,13 @@ class ArticleType extends AbstractType
                   'message' => "Merci de saisir un titre d'article"
                 ])
               ]
+            ])
+            // on définit le champ permettant d'associer une catégorie dans le formulaire
+            // ce champ provient d'une autre entité, en gros c'est la clé étrangère
+            ->add('category', EntityType::class, [
+              'label' => "Choisir une catégorie",
+              'class' => Category::class, // on précise de quelle entité vient ce champ
+              'choice_label' => 'titre' // on définit la valeur qui apparaitra dans la liste déroulante
             ])
             ->add('contenu', TextareaType::class, [
               'attr' => [

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog Symfony | Identifiez-vous{% endblock %}
+
+{% block body %}
+
+    {% if error %}
+        <div class="col-4 bg-danger p-3 text-white text-center mx-auto my-3">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+
+    {# On affiche les messages utilisateur stockés en session (addFlash) #}
+    {% for message in app.flashes('success') %}
+    <div class="col-6 bg-success text-center text-white p-3 mx-auto">
+        {{ message }}
+    </div>
+    {% endfor %}
+
+
+    <h1 class="h3 mb-3 font-weight-normal">Identifiez-vous</h1>
+
+        <form method="post" class="col-4 mx-auto">
+
+            <label for="inputEmail">Email</label>
+            <input type="email" value="{{ last_username }}" name="email" id="email" class="form-control" autocomplete="email" required autofocus>
+
+            <label for="inputPassword">Password</label>
+            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <button class="btn btn-lg btn-primary my-5" type="submit">
+                Me connecter
+            </button>
+        </form>
+        {% endblock %}
