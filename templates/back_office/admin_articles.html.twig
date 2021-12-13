@@ -7,7 +7,17 @@
 
 {% block body %}
 
-    <table class="table table-striped m-2">
+  {% for message in app.flashes('success') %}
+      <div class="col-6 mx-auto text-center bg-success p-3 text-white mb-3">
+        {{ message }}
+      </div>
+  {% endfor %}
+
+  <a href="{{ path('app_admin_article_add') }}" class="btn btn-success mb-3">Ajouter un nouvel article<i class="bi bi-plus-square mx-3"></i></a>
+
+
+    <table class="table table-striped m-2" id="table-backoffice">
+        <thead>
         <tr>
           {# colonnes : objet (BackOfficeController) qui contient tous les noms des champs/colonnes de la table sql Articles #}
 
@@ -25,26 +35,34 @@
                 <th>Nb Comm.</th>
                 <th>Action</th>
         </tr>
+        </thead>
 
+        <tbody>
           {% for art in articles %}
             <tr>
             {% if art.photo != 'id' %}
 
                 <td class="text-center">{{ art.titre }}</td>
                 <td class="text-center">{{ art.contenu|striptags|slice(0,60) }}</td>
-                <td><img src="{{ asset('upload/photos/' ~ art.photo) }}" alt="{{ art.titre }}" class="col-3 img-responsive"></td>
+
+                {# Si la valeur de la photo en BDD est différente de NULL, cela veut dire qu'une photo a bien été téléchargée, on entre dans le if et on affiche l'image #}
+                {% if art.photo != null %}
+                    <td><img src="{{ asset('upload/photos/' ~ art.photo) }}" alt="{{ art.titre }}" class="col-3 img-responsive"></td>
+                {% else %}
+                    <td class="text-danger text-center">Aucune photo téléchargée</td>
+                {% endif %}
+
                 <td class="text-center">{{ art.date|date() }}</td>
                 <td class="text-center">{{ art.category.titre }}</td>
                 <td class="text-center">{{ art.comments|length }}</td>
                 <td>
-                  <button type="button" name="button">Modifier</button><br>
-                  <button type="button" name="button">Supprimer</button>
+                  <a href="{{ path('app_admin_article_add', {'id': art.id }) }}" class="btn btn-success mb-3"><i class="bi bi-pencil-square"></i></a>
+                  <a href="{{ path('app_admin_article_remove', {'id': art.id }) }}" class="btn btn-danger" onclick="return(confirm('Voulez-vous réellement supprimer l\'article n° {{ art.id }}'))"><i class="bi bi-trash-fill"></i></a>
                 </td>
             {% endif %}
             </tr>
           {% endfor %}
-
-
+        </tbody>
     </table>
 
 {% endblock %}

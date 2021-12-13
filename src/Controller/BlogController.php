@@ -112,7 +112,7 @@ class BlogController extends AbstractController
 
 
 
-      // Si la variable $article est nulle, cela veut ire que nous sommes sur la route 'blog/new', on entre dans le if et on crée une nouvelle instance de l'entité article
+      // Si la variable $article est nulle, cela veut dire que nous sommes sur la route 'blog/new', on entre dans le if et on crée une nouvelle instance de l'entité article
       // Si la variable $article n'est pas nulle, cela veut dire que nous sommes sur la route '/blog/{id}/edit', nous n'entrons pas dans le if car $article contient un article de la bdd
       if(!$article)
       {
