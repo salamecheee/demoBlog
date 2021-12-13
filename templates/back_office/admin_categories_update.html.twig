@@ -1,0 +1,28 @@
+{% extends "base_admin.html.twig" %}
+
+{% block title %}
+    Blog Symfony | BACKOFFICE | Category Update
+{% endblock %}
+
+
+{% block body %}
+
+
+{{ form_start(formCategory) }}
+
+    {{ form_widget(formCategory) }}
+
+    <button type="submit" class="btn btn-warning btn-blog mb-5 ">Modifier</button>
+
+{{ form_end(formCategory) }}
+
+{% endblock %}
+
+
+
+
+{# {% for message in app.flashes('success') %}
+    <div class="col-6 mx-auto text-center alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %} #}

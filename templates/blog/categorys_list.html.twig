@@ -1,0 +1,5 @@
+
+{# on boucle les catégories séléctionnées en bdd (allCategory() -> blogController) afin de géénrer un lien <a></a> par catégorie #}
+{% for data in categorys %}
+    <a class="p-2 link-secondary" href="{{ path('blog_categorie', {'id': data.id}) }}">{{ data.titre }}</a>
+{% endfor %}

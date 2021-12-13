@@ -148,6 +148,19 @@ class RegistrationFormType extends AbstractType
                 ]
             ]);
         }
+        elseif($options['userUpdateBackOffice'] == true)
+        {
+          $builder
+          ->add('roles', TextType::class, [
+              'required' => false,
+              'constraints' => [
+                  new NotBlank([
+                      'message' => "Veuillez renseigner votre email."
+                  ])
+              ]
+          ]);
+        }
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

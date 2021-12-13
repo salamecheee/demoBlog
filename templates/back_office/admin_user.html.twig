@@ -1,0 +1,57 @@
+{% extends "base_admin.html.twig" %}
+
+{% block title %}
+    Blog Symfony | BACKOFFICE | User
+{% endblock %}
+
+
+{% block body %}
+
+
+
+<h2 class="mt-4 text-center">User</h2>
+
+{{ dump(users) }}
+<table class="table table-striped m-2" id="table-categories">
+    <thead>
+    <tr>
+
+      {% for data in b %}
+            <th class="text-center">{{ data|capitalize }}</th>
+      {% endfor %}
+
+    </tr>
+    </thead>
+
+    <tbody>
+      {% for data in users %}
+        <tr>
+          <td>{{ data.id }}</td>
+          <td>{{ data.email }}</td>
+
+          <td>
+            {% if data.roles == "" %}
+                <p>Utilisateur</p>
+            {% else %}
+                <p>Administrateur</p>
+            {% endif %}
+          </td>
+          <td>{{ data.password }}</td>
+          <td>{{ data.prenom }}</td>
+          <td>{{ data.nom }}</td>
+          <td>{{ data.adresse }}</td>
+          <td>{{ data.ville }}</td>
+          <td>{{ data.codepostal }}</td>
+
+          <td>
+            <a href="{{ path('app_admin_commentaires_update', {'id': data.id }) }}" class="btn btn-danger" onclick="return(confirm('Voulez-vous réellement modifier le rôle de l'utilisateur n° {{ data.id }}'))"><i class="bi bi-trash-fill"></i></a><br>
+          </td>
+        </tr>
+
+      {% endfor %}
+
+    </tbody>
+  </table>
+
+
+{% endblock %}
