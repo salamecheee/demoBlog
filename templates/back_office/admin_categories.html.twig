@@ -1,0 +1,73 @@
+{% extends "base_admin.html.twig" %}
+
+{% block title %}
+    Blog Symfony | BACKOFFICE | Category
+{% endblock %}
+
+
+{% block body %}
+
+
+<table class="table table-striped m-2" id="table-categories">
+    <thead>
+    <tr>
+      {# colonnes : objet (BackOfficeController) qui contient tous les noms des champs/colonnes de la table sql Articles #}
+
+      {% for data in colonnes %}
+        {# on exlu la colonne 'id' #}
+        {% if data != 'id' %}
+
+            {# capitalize : filtre twig permettant de mettre le premier élément de la chaîne de caractère en majuscule #}
+            <th class="text-center">{{ data|capitalize }}</th>
+
+        {% endif %}
+
+      {% endfor %}
+            <th>Nb Art.</th>
+            <th>Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+      {% for data in allCategory %}
+        <tr>
+          <td>{{ data.titre }}</td>
+          <td>{{ data.description }}</td>
+          <td class="text-center">{{ data.articles|length }}</td>
+          <td>
+            <a href="" class="btn btn-primary mb-3"><i class="bi bi-plus-square"></i></a>
+            <a href="" class="btn btn-success"><i class="bi bi-pencil-square"></i></a>
+            <a href="" class="btn btn-danger" onclick="return(confirm('Voulez-vous réellement supprimer la catégorie n° {{ data.id }}'))"><i class="bi bi-trash-fill"></i></a>
+          </td>
+        </tr>
+
+      {% endfor %}
+
+    </tbody>
+  </table>
+
+
+
+
+
+
+
+
+{{ form_start(formCategory) }}
+
+    {{ form_widget(formCategory) }}
+
+    <button type="submit" class="btn btn-warning btn-blog mb-5 ">Créer</button>
+
+{{ form_end(formCategory) }}
+
+{% endblock %}
+
+
+
+
+{# {% for message in app.flashes('success') %}
+    <div class="col-6 mx-auto text-center alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %} #}
