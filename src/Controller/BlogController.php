@@ -15,6 +15,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Form\CommentType;
 use App\Entity\Comment;
+use App\Repository\CategoryRepository;
+use App\Entity\Category;
+
 
 
 
@@ -30,12 +33,25 @@ class BlogController extends AbstractController
           'title' => 'Bienvenue sur le blog Symfony',
           'age' => 25
         ]);
+    }
+
+    # cette méthode permet de séléctionner toutes les catégories de la BDD mais ne possède pas de route, les catégories seront intégrées dans base.html.twig
+    public function allCategory(CategoryRepository $repoCategory)
+    {
+      $categorys = $repoCategory->findAll();
+
+      return $this->render('blog/categorys_list.html.twig', [
+          'categorys' => $categorys
+      ]);
+
 
     }
 
+
     # Méthode permettant d'afficher le détail des articles en BDD
     #[Route('/blog', name: 'blog')]
-    public function blog(ArticleRepository $repoArticle): Response
+    #[Route('/blog/categorie/{id}', name: 'blog_categorie')]
+    public function blog(ArticleRepository $repoArticle, CategoryRepository $repoCategory, Category $category = null): Response
     {
         /*
 
@@ -55,11 +71,20 @@ class BlogController extends AbstractController
 
         // dump() / dd() : outil de debug Symfony
 
+        if($category)
+        {
+          // Grâce aux relations bi-directionnelles, lorsque nous séléctionnons une catégorie en bdd, nous avons accès automatiquement à tous les articles liés à cette catégorie
+          // getArticles() retourne un array mutli contenant tous les articles liés à la catégorie transmise dans l'url
+          $articles = $category->getArticles();
+        }
+        else // sinon aucune catégorie n'est transmise dans l'url, alors on séléctionne tous les articles dans la bdd
+        {
+          // findAll() : méthode issue de la classe ArticleRepository permettant de séléctionner l'ensemble de la table SQL et de récupérer un tableau mutli contenant l'ensemble des articles stockés en BDD
+          $articles = $repoArticle->findAll(); // SELECT * FROM article + FETCH_ALL
+          // dump($articles);
+          // dd($articles);
+        }
 
-        // findAll() : méthode issue de la classe ArticleRepository permettant de séléctionner l'ensemble de la table SQL et de récupérer un tableau mutli contenant l'ensemble des articles stockés en BDD
-        $articles = $repoArticle->findAll(); // SELECT * FROM article + FETCH_ALL
-        // dump($articles);
-        // dd($articles);
 
         return $this->render('blog/blog.html.twig', [
           'articles' => $articles // On transmet au template les articles séléctionnés en BDD afin que twig traite l'affichage
@@ -243,13 +268,21 @@ class BlogController extends AbstractController
 
         $comment = new Comment;
 
-        $formComm = $this->createForm(CommentType::class, $comment);
+        $formComm = $this->createForm(CommentType::class, $comment, [
+          'CommentFormFront' => true // on indique dans quelle condition if on entre dans le fichier 'App\Form\CommentType'
+        ]);
 
         $formComm->handleRequest($request);
 
         if($formComm->isSubmitted() && $formComm->isValid())
         {
+
+          // dd($this->getUser());
+          // getUser() : méthode de Syfony qui retourne un objet (App\Entity\User) contenant les informations de l'utilisateur authentifié sur le blog
+          $user = $this->getUser();
+
           $comment->setDate(new \DateTime())
+                  ->setAuteur($user->getPrenom() . ' ' . $user->getNom())
                   ->setArticle($article); // on relie le commentaire à l'article
 
           // dd($comment);

@@ -1,0 +1,43 @@
+{% extends "base_admin.html.twig" %}
+
+{% block title %}
+    Blog Symfony | BACKOFFICE | Commentaires
+{% endblock %}
+
+
+{% block body %}
+
+
+
+<h2 class="mt-4 text-center">Derniers avis</h2>
+
+<table class="table table-striped m-2" id="table-categories">
+    <thead>
+    <tr>
+
+      {% for data in a %}
+            <th class="text-center">{{ data|capitalize }}</th>
+      {% endfor %}
+
+    </tr>
+    </thead>
+
+    <tbody>
+      {% for data in comment %}
+        <tr>
+          <td>{{ data.id }}</td>
+          <td>{{ data.commentaire|raw }}</td>
+          <td>{{ data.auteur }}</td>
+          <td>{{ data.date|date() }}</td>
+          <td>
+            <a href="{{ path('app_admin_commentaires_remove', {'id': data.id }) }}" class="btn btn-danger" onclick="return(confirm('Voulez-vous réellement supprimer le commentaire n° {{ data.id }}'))"><i class="bi bi-trash-fill"></i></a><br>
+          </td>
+        </tr>
+
+      {% endfor %}
+
+    </tbody>
+  </table>
+
+
+{% endblock %}

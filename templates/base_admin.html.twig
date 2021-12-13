@@ -60,34 +60,37 @@
          <a href="{{ path('app_admin') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
            <span class="fs-4">BACKOFFICE</span>
          </a>
+         <!-- {{ dump(app.request.attributes.get('_route')) }} {# renvoie le nom de la route dans la variable twig #} -->
+         {% set route_name = app.request.attributes.get('_route') %}
+
          <hr>
          <ul class="nav nav-pills flex-column mb-auto">
            <li class="nav-item">
-             <a href="{{ path('app_admin') }}" class="nav-link active" aria-current="page">
+             <a href="{{ path('app_admin') }}" class="nav-link text-white {% if route_name == 'app_admin' %} active {% endif %}" aria-current="page">
                <i class="bi bi-house"></i>
                Home
              </a>
            </li>
            <li>
-             <a href="{{ path('app_admin_articles') }}" class="nav-link text-white">
+             <a href="{{ path('app_admin_articles') }}" class="nav-link text-white {% if route_name == 'app_admin_articles' %} active {% endif %}">
                <i class="bi bi-bag-check"></i>
                Articles
              </a>
            </li>
            <li>
-             <a href="{{ path('app_admin_categories_add') }}" class="nav-link text-white">
+             <a href="{{ path('app_admin_categories_add') }}" class="nav-link text-white {% if route_name == 'app_admin_categories_add' %} active {% endif %}">
                <i class="bi bi-bookmarks"></i>
                Catégories
              </a>
            </li>
            <li>
-             <a href="#" class="nav-link text-white">
+             <a href="{{ path('app_admin_commentaires') }}" class="nav-link text-white {% if route_name == 'app_admin_commentaires' %} active {% endif %}">
                <i class="bi bi-chat-dots"></i>
                Commentaires
              </a>
            </li>
            <li>
-             <a href="#" class="nav-link text-white">
+             <a href="#" class="nav-link text-white {% if route_name == '#' %} active {% endif %}">
                <i class="bi bi-person"></i>
                User
              </a>
