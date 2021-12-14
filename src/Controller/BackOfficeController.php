@@ -328,17 +328,18 @@ class BackOfficeController extends AbstractController
    #[Route('/admin/user/{id}/update', name: 'app_admin_user_update')]
    public function adminUser(EntityManagerInterface $manager, Request $request, UserRepository $repoUser, User $user = null): Response
    {
+
      $b = $manager->getClassMetadata(User::class)->getFieldNames();
 
      $users = $repoUser->findAll();
 
-     $roleUser = $this->createForm(RegistrationFormType::class, $user, [
+     $formUser = $this->createForm(RegistrationFormType::class, $user, [
        'userUpdateBackOffice' => true
      ]);
 
-     $roleUser->handleRequest($request);
+     $formUser->handleRequest($request);
 
-     if($roleUser->isSubmitted() && $roleUser->isValid())
+     if($formUser->isSubmitted() && $formUser->isValid())
      {
        $manager->persist($user);
        $manager->flush();
@@ -350,14 +351,34 @@ class BackOfficeController extends AbstractController
 
      return $this->render('back_office/admin_user.html.twig', [
        'b' => $b,
-       'users' => $users
+       'users' => $users,
+       'user' => $user,
+       'formUser' => $formUser->createView()
+
       ]);
    }
 
+   #[Route('/admin/user/{id}/delete', name: 'app_admin_user_delete')]
+   public function adminUserDelete(EntityManagerInterface $manager, Request $request, UserRepository $repoUser, User $user = null): Response
+   {
 
+     $c = $manager->getClassMetadata(User::class)->getFieldNames();
 
+     $users = $repoUser->findAll();
 
+     if($user)
+     {
+         $idUser = $user->getId();
 
+         $manager->remove($user);
+         $manager->flush();
+
+         $this->addFlash('success', "L'utilisateur' '$idUser' a été supprimé avec succès.");
+
+         return $this->redirectToRoute('app_admin_user');
+      }
+
+   }
 
 
 }

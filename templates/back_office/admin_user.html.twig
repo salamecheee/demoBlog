@@ -11,14 +11,19 @@
 
 <h2 class="mt-4 text-center">User</h2>
 
-{{ dump(users) }}
+{# {{ dump(users) }} #}
 <table class="table table-striped m-2" id="table-categories">
     <thead>
     <tr>
 
       {% for data in b %}
+          {% if data != 'password' %}
             <th class="text-center">{{ data|capitalize }}</th>
+          {% endif %}
       {% endfor %}
+
+      <th class="text-center">Modifier</th>
+      <th class="text-center">Supprimer</th>
 
     </tr>
     </thead>
@@ -26,32 +31,47 @@
     <tbody>
       {% for data in users %}
         <tr>
-          <td>{{ data.id }}</td>
-          <td>{{ data.email }}</td>
+          <td class="text-center">{{ data.id }}</td>
+          <td class="text-center">{{ data.email }}</td>
 
-          <td>
-            {% if data.roles == "" %}
+          <td class="text-center">
+            {% if data.roles[0] != "ROLE_ADMIN" %}
                 <p>Utilisateur</p>
             {% else %}
                 <p>Administrateur</p>
             {% endif %}
           </td>
-          <td>{{ data.password }}</td>
-          <td>{{ data.prenom }}</td>
-          <td>{{ data.nom }}</td>
-          <td>{{ data.adresse }}</td>
-          <td>{{ data.ville }}</td>
-          <td>{{ data.codepostal }}</td>
+          <td class="text-center">{{ data.prenom }}</td>
+          <td class="text-center">{{ data.nom }}</td>
+          <td class="text-center">{{ data.adresse }}</td>
+          <td class="text-center">{{ data.ville }}</td>
+          <td class="text-center">{{ data.codepostal }}</td>
 
-          <td>
-            <a href="{{ path('app_admin_commentaires_update', {'id': data.id }) }}" class="btn btn-danger" onclick="return(confirm('Voulez-vous réellement modifier le rôle de l'utilisateur n° {{ data.id }}'))"><i class="bi bi-trash-fill"></i></a><br>
+          <td class="text-center">
+            <a href="{{ path('app_admin_user_update', {'id': data.id }) }}?a=update" class="btn btn-warning"><i class="bi bi-pen"></i></i></a><br>
+          </td>
+
+          <td class="text-center">
+            <a href="{{ path('app_admin_user_delete', {'id': data.id }) }}" class="btn btn-danger"><i class="bi bi-trash"></i></i></a><br>
           </td>
         </tr>
-
       {% endfor %}
 
     </tbody>
   </table>
 
+  {% if app.request.query.get('a') == 'update' %}
+
+  <h2 class="mt-4 text-center my-5">Modification de l'utilisateur {{ user.id }}</h2>
+
+    {{ form_start(formUser) }}
+
+        {{ form_row(formUser.roles) }}
+
+        <button class="btn btn-warning" name="button">Modifier</button>
+
+    {{ form_end(formUser) }}
+
+  {% endif %}
 
 {% endblock %}

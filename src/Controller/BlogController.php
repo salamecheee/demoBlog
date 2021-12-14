@@ -19,9 +19,6 @@ use App\Repository\CategoryRepository;
 use App\Entity\Category;
 
 
-
-
-
 class BlogController extends AbstractController
 {
 
@@ -160,6 +157,13 @@ class BlogController extends AbstractController
               $article->setDate(new \DateTime());
 
           // dd($article);
+
+          // On relie l'article publié à l'utilisateur en BDD
+          // On relie la clé étrangère dans la BDD
+          // setUser() attend que en argument l'objet App\Entity\User
+          $article->setUser($this->getUser());
+
+
 
 
           /////// DEBUT TRAITEMENT PHOTO
@@ -304,6 +308,13 @@ class BlogController extends AbstractController
         ]);
 
     }
+
+    /*
+        Exo : le but est de relier les utilisateurs aux articles, lorsque l'internaute poste un article, il faut une relation entre Article et User
+        Créer une nouvelle propriété dans l'entité user 'article' et faire une relation OneToMany, cette propriété peut être nulle.
+        Lorsque l'internaute poste un nouvel article, faites en sorte de renseigner la clé étrangère 'user_id' afin que l'article soit relié à l'utilisateur connecté
+        Dans la page profil de l'utilisateur, afficher dans une liste de tous les articles postés par l'internaute (titre article (lien qui redirige vers l'article), date/heure et un lien pour la modification)
+    */
 
 
 }

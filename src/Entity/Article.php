@@ -50,6 +50,11 @@ class Article
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
+     */
+    private $user;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -149,4 +154,18 @@ class Article
 
         return $this;
     }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+
 }

@@ -12,7 +12,7 @@
         <p class="text-center text-secondary">Vous êtes ADMINISTRATEUR du site</p>
     {% endif %}
 
-    {# {{ dump(user) }} #}
+    <!-- {{ dump(user) }} -->
 
     <div class="col-6 mx-auto accordion mb-5" id="accordionExample">
         <div class="accordion-item">
@@ -94,5 +94,41 @@
             </div>
         </div>
     </div>
+
+    <h4 class="text-center my-5">Vos articles</h4>
+
+    {% if user.articles is not empty %}
+
+    <table class="table table-border-less">
+      <thead>
+        <tr>
+          <th>Titre</th>
+          <th class="text-center">Catégorie</th>
+          <th class="text-center">Date</th>
+          <th class="text-center">Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in user.articles %}
+            <tr>
+              <td>
+                <a href="{{ path('blog_show', {'id': data.id}) }}" class="link-secondary">{{ data.titre }}</a>
+              </td>
+              <td class="text-center">
+                <a href="{{ path('blog_categorie', {'id': data.category.id}) }}" class="link-secondary">{{ data.category.titre }}</a>
+              </td>
+              <td class="text-center">{{ data.date|date('d/m/Y à H:i:s') }}</td>
+              <td>
+                <a href="{{ path('blog_edit', {'id': data.id }) }}" class="text-dark"></a>
+              </td>
+            </tr>
+         {% endfor %}
+      </tbody>
+    </table>
+
+    {% else %}
+      <p class="text-secondary fst-italic text-center">Vous n'avez encore posté aucun article</p>
+
+    {% endif %}
 
 {% endblock %}
