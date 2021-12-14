@@ -37,7 +37,15 @@
       <div class="col-{{ col }} p-4 d-flex flex-column position-static">
         <strong class="d-inline-block mb-2 text-primary">{{ article.category.titre }}</strong>
         <h3 class="mb-0">{{ article.titre }}</h3>
-        <div class="mb-1 text-muted">{{ article.date|date("Y-m-d") }} à {{ article.date|date("H:i:s") }}</div>
+
+
+        <div class="mb-1 text-muted">Publié par
+
+            {% if article.user is not empty %}
+                  <strong>{{ article.user.prenom }} {{ article.user.nom }}</strong>
+            {% endif %}
+
+        le {{ article.date|date("Y-m-d") }} à {{ article.date|date("H:i:s") }}</div>
 
         <p class="card-text mb-auto">{{ article.contenu|striptags }}</p>
 

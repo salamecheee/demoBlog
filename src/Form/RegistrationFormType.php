@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -151,16 +152,17 @@ class RegistrationFormType extends AbstractType
         elseif($options['userUpdateBackOffice'] == true)
         {
           $builder
-          ->add('roles', TextType::class, [
-              'required' => false,
-              'constraints' => [
-                  new NotBlank([
-                      'message' => "Veuillez renseigner votre email."
-                  ])
-              ]
-          ]);
+          ->add('roles', ChoiceType::class, [
+                  'choices' => [
+                    'Utilisateur' => '',
+                    'Administrateur' => 'ROLE_ADMIN'
+                  ],
+                  'expanded' => false,
+                  'multiple' => true,
+                  'label' => "Définir le rôle de l'utilisateur"
+                ]
+          );
         }
-
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -168,7 +170,8 @@ class RegistrationFormType extends AbstractType
         $resolver->setDefaults([
             'data_class' => User::class,
             'userRegistration' => false,
-            'userUpdate' => false
+            'userUpdate' => false,
+            'userUpdateBackOffice' => false
         ]);
     }
 }

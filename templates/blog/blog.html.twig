@@ -38,7 +38,13 @@
           <p class="card-text mb-auto">{{ data.contenu|slice(0, 100)|striptags }}</p>
 
           {# Pour la date, ce que retourne la bdd est un objet issu de la classe DateTime, donc on ne peut pas convertir un objet en chaîn de caractères, pour cela nous devons utiliser la fonction date() de twig #}
-          <p class="card-text mb-auto">Publié le {{ data.date|date("Y-m-d") }} à {{ data.date|date("H:i:s") }}</p>
+          <p class="card-text mb-auto">Publié par
+
+            {% if data.user is not empty %}
+                  <strong>{{ data.user.prenom }} {{ data.user.nom }}</strong>
+            {% endif %}
+
+            le {{ data.date|date("Y-m-d") }} à {{ data.date|date("H:i:s") }}</p>
           <a href="{{ path('blog_show', {'id' : data.id})}}" class="stretched-link">Lire la suite</a>
 
         </div>
